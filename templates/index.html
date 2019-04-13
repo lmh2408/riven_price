@@ -1,0 +1,103 @@
+{% extends "layout.html" %}
+
+{% block title %}Riven Price{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col text-center">
+            <a href="/"><img id="page_logo" src="/static/image/logo.png" alt="logo.png"></a>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-6 text-center">
+            <form action="" name="query_search" id="query_search" method="GET">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="query" id="query" placeholder="Enter item">
+                </div>
+                <button type="submit" class="btn btn-primary" id="search_button">Look up</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="query_result">
+
+        <!--<div class="row justify-content-center">-->
+        <!--    <div class="col-5 text-center sorry"><p>Result not found</p></div>-->
+        <!--</div>-->
+
+        <!--<div class="row">-->
+        <!--    <div class="col text-center result_header"><p>- Result -</p></div>-->
+        <!--</div>-->
+
+        <!--<div class="row justify-content-center">-->
+        <!--    <div class="col-4 result_box">-->
+        <!--        <p><b>Riven type:</b> '+ result[0]["itemType"] +'</p>-->
+        <!--        <p><b>Weapon:</b> '+ result[0]["compatibility"] +'</p>-->
+        <!--        <p><b>Rerolled:</b> '+ result[0]["rerolled"] +'</p>-->
+        <!--        <p><b>Average value:</b> '+ result[0]["median"] +'</p>-->
+        <!--        <p><b>Standard deviation:</b> '+ result[0]["stddev"] +'</p>-->
+        <!--        <p><b>Minimum plat traded:</b> '+ result[0]["min"] +'</p>-->
+        <!--        <p><b>Maximum plat traded:</b> '+ result[0]["max"] +'</p>-->
+        <!--        <p><b>Popularity:</b> '+ result[0]["pop"] +'</p>-->
+        <!--    </div>-->
+        <!--    <div class="col-4 result_box">-->
+        <!--        <p><b>Riven type:</b> '+ result[1]["itemType"] +'</p>-->
+        <!--        <p><b>Weapon:</b> '+ result[1]["compatibility"] +'</p>-->
+        <!--        <p><b>Rerolled:</b> '+ result[1]["rerolled"] +'</p>-->
+        <!--        <p><b>Average value:</b> '+ result[1]["median"] +'</p>-->
+        <!--        <p><b>Standard deviation:</b> '+ result[1]["stddev"] +'</p>-->
+        <!--        <p><b>Minimum plat traded:</b> '+ result[1]["min"] +'</p>-->
+        <!--        <p><b>Maximum plat traded:</b> '+ result[1]["max"] +'</p>-->
+        <!--        <p><b>Popularity:</b> '+ result[1]["pop"] +'</p>-->
+        <!--    </div>-->
+        <!--</div>-->
+    </div>
+
+    <script>
+        $("document").ready(function(){
+            // jquery UI autocomplete
+            var tags = [{% for item in query_list %}"{{item|safe}}", {% endfor %}"0"];
+            $( "#query" ).autocomplete({
+                minLength: 2,
+                source: function( request, response ) {
+                    var matcher = new RegExp( "^" + $.ui.autocomplete.escapeRegex( request.term ), "i" );
+                    response( $.grep( tags, function( item ){
+                        return matcher.test( item );
+                    }));
+                }
+            });
+
+            // get form value, request data, then display that data
+            $("#query_search").submit(function(){
+                // get input
+                var query = $("#query").val();
+
+                // send request
+                $.ajax({
+                    url: "/price?query=" + query,
+                    async: false,
+                    success: function(result){
+                        console.log(result);
+
+                        // empty previous result
+                        $("#query_result").empty();
+
+                        // display error if no result
+                        if (result == false){
+                            $("#query_result").append('<div class="row justify-content-center"><div class="col-5 text-center sorry"><p>Result not found</p></div></div>');
+                        }
+                        // handle json data then insert into html
+                        else {
+                            $("#query_result").append('<div class="row"><div class="col text-center result_header"><p>- Result -</p></div></div><div class="row justify-content-center"><div class="col-4 result_box"><p><b>Riven type:</b> '+ result[0]["itemType"] +'</p><p><b>Weapon:</b> '+ result[0]["compatibility"] +'</p><p><b>Rerolled:</b> '+ result[0]["rerolled"] +'</p><p><b>Average value:</b> '+ result[0]["median"] +'</p><p><b>Standard deviation:</b> '+ result[0]["stddev"] +'</p><p><b>Minimum plat traded:</b> '+ result[0]["min"] +'</p><p><b>Maximum plat traded:</b> '+ result[0]["max"] +'</p><p><b>Popularity:</b> '+ result[0]["pop"] +'</p></div><div class="col-4 result_box"><p><b>Riven type:</b> '+ result[1]["itemType"] +'</p><p><b>Weapon:</b> '+ result[1]["compatibility"] +'</p><p><b>Rerolled:</b> '+ result[1]["rerolled"] +'</p><p><b>Average value:</b> '+ result[1]["median"] +'</p><p><b>Standard deviation:</b> '+ result[1]["stddev"] +'</p><p><b>Minimum plat traded:</b> '+ result[1]["min"] +'</p><p><b>Maximum plat traded:</b> '+ result[1]["max"] +'</p><p><b>Popularity:</b> '+ result[1]["pop"] +'</p></div></div>');
+                        }
+                    }
+                });
+                return false;
+            });
+        });
+
+
+    </script>
+{% endblock %}
+
+

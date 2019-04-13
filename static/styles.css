@@ -1,0 +1,64 @@
+body
+{
+    background: #414342;
+}
+
+.b
+{
+    padding-top: 2rem;
+}
+
+.ui-widget-content .ui-state-active
+{
+    background: white;
+    color: black;
+    border: 1px solid #ced4da;
+}
+
+#query_result
+{
+    margin-top: 3rem;
+}
+
+.result_box
+{
+    background-color: #ddd;
+    margin: 1rem;
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
+
+#page_logo
+{
+    height: 19rem;
+}
+
+.sorry
+{
+    padding: 1rem;
+    background: #ddd;
+    border-radius: 0.5rem;
+    font-size: 1.6rem;
+    padding-bottom: 0.2rem;
+}
+
+#search_button
+{
+    width: 13rem;
+    background: #7d2489;
+    border-color: #7d2489;
+    margin-top: 1rem;
+}
+
+.result_header
+{
+    font-size: 2rem;
+    color: white;
+}
+
+footer
+{
+    color: white;
+    margin-top: 14rem;
+    font-size: 0.8rem;
+}
